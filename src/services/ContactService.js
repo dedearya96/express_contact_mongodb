@@ -1,23 +1,22 @@
-import { Sequelize, where } from "sequelize";
+
 import ContactModel from "../model/ContactModel.js"
 
 export const searchContactServices = (key) => {
-    const Op = Sequelize.Op;
-    return ContactModel.findAll({
-        where: {
-            name: {
-                [Op.like]: '%' + key + '%'
-            }
+    return ContactModel.find(
+        {
+            "$or": [
+                { name: { $regex: key } }
+            ]
         }
-    })
+    );
 }
 
 export const fetchAllContact = () => {
-    return ContactModel.findAll();
+    return ContactModel.find();
 }
 
 export const fetchContactById = (id) => {
-    return ContactModel.findByPk(id);
+    return ContactModel.findById(id);
 }
 
 export const storeContact = (req) => {
@@ -29,18 +28,15 @@ export const storeContact = (req) => {
 }
 
 export const updateContactService = (req, id) => {
-    return ContactModel.update({
-        name: req.name,
-        email: req.email,
-        phone: req.phone
-    }, {
-        where: { id: id },
-
+    return ContactModel.updateOne({ _id: id }, {
+        $set: {
+            name: req.name,
+            email: req.email,
+            phone: req.phone
+        },
     });
 }
 
 export const deleteContactServices = (id) => {
-    return ContactModel.destroy({
-        where: { id: id },
-    })
+    return ContactModel.deleteOne({ _id: id })
 }
