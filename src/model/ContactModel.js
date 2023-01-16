@@ -1,29 +1,26 @@
-import { DataTypes, Sequelize } from "sequelize";
-import dbLat from "../config/db.js";
+import mongoose from 'mongoose';
 
-const ContactModel = dbLat.define('contact', {
-    id: {
-        type: DataTypes.NUMBER,
-        primaryKey: true
-    },
+const ContactsSchema = new mongoose.Schema({
     name: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        type: String,
+        required: true,
     },
     email: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: String,
+        required: true,
     },
     phone: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        type: String,
+        required: true,
     },
     createdAt: {
-        type: DataTypes.DATE
+        type: Date
     },
     updatedAt: {
-        type: DataTypes.DATE
+        type: Date
     }
 });
+
+const ContactModel = mongoose.model('contacts', ContactsSchema);
 
 export default ContactModel;
